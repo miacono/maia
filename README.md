@@ -1,6 +1,6 @@
 # MAIA
 
-> **M**uster, **A**ssign, **I**ntervene, **A**udit
+> MAIA — **M**ission **A**ware **I**ncident **A**uthority
 >
 > The open source platform for coordinated emergency response.
 
@@ -9,11 +9,11 @@
 [![Security Scan](https://github.com/your-org/maia/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/your-org/maia/actions)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-MAIA is an API-first platform for coordinating emergency response operations
-during natural disasters. It provides operations centers with the tools to
-muster rescue teams and equipment, assign them to active incidents, intervene
-with real-time situational awareness, and audit every action through an
-immutable, tamper-evident log.
+MAIA (**M**ission **A**ware **I**ncident **A**uthority) is an API-first platform
+for coordinating emergency response operations during natural disasters.
+It provides operations centers with the tools to manage rescue teams and
+equipment, assign them to active incidents, maintain real-time situational
+awareness, and audit every action through an immutable, tamper-evident log.
 
 ---
 
@@ -367,7 +367,7 @@ Submit a private report via
 
 ## License
 
-DisasterResponse Platform is released under the
+MAIA is released under the
 [GNU Affero General Public License v3.0](LICENSE).
 
 The full license text is available in the `LICENSE` file.

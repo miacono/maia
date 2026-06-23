@@ -1,6 +1,6 @@
 # CLAUDE.md — Instructions for Building MAIA
 
-> **M**uster, **A**ssign, **I**ntervene, **A**udit
+> MAIA — **M**ission **A**ware **I**ncident **A**uthority
 >
 > The open source platform for coordinated emergency response.
 
@@ -39,7 +39,7 @@ must be rejected in code review and will fail the CI lint step.
 
 ## 1. Project Context
 
-MAIA (**M**uster, **A**ssign, **I**ntervene, **A**udit) is an open source
+MAIA (**M**ission **A**ware **I**ncident **A**uthority) is an open source
 ticketing system for managing natural disasters and emergency response.
 It allows an operations center to:
 
