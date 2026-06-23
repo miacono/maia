@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: license-header
+        name: Check and add AGPL-3 license headers
+        entry: python3 scripts/check_license_header.py
+        language: system
+        types: [python]
+        exclude: ^backend/migrations/
+        pass_filenames: true
