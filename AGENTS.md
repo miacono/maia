@@ -241,6 +241,18 @@ class AuditLog(Base):
 The application DB user must NOT have UPDATE/DELETE permissions on `audit_log`.
 This must be enforced via PostgreSQL grants in the migration.
 
+### Database roles
+
+| Role | Env var | Privileges |
+|---|---|---|
+| migrator | `MIGRATION_DATABASE_URL` | Owns the database and schema; runs Alembic (DDL) |
+| app | `DATABASE_URL` | `SELECT`, `INSERT`, `UPDATE` only — no `DELETE`/`TRUNCATE` (soft delete) |
+| audit | `AUDIT_DATABASE_URL` | Read-only on `audit_log`, for chain verification |
+
+Default privileges for `app` are set when the roles are created; per-table
+restrictions (e.g. `audit_log`) and `audit` grants belong in the migration that
+creates the table. Local roles are created by `infrastructure/docker/postgres/20-maia-roles.sh`.
+
 ---
 
 ## 6. API Design — Conventions
@@ -432,6 +444,7 @@ No hardcoded values, no `.env` in the repository (only `.env.example`).
 ```bash
 # Database
 DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/dbname
+MIGRATION_DATABASE_URL=postgresql+asyncpg://migrator:pass@host:5432/dbname
 AUDIT_DATABASE_URL=postgresql+asyncpg://audit_user:pass@host:5432/auditdb
 
 # Auth
