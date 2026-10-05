@@ -445,7 +445,9 @@ No hardcoded values, no `.env` in the repository (only `.env.example`).
 # Database
 DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/dbname
 MIGRATION_DATABASE_URL=postgresql+asyncpg://migrator:pass@host:5432/dbname
-AUDIT_DATABASE_URL=postgresql+asyncpg://audit_user:pass@host:5432/auditdb
+# Same database as DATABASE_URL: audit entries are written in the same
+# transaction as the operation (§12.3). Only the role differs (read-only, §5).
+AUDIT_DATABASE_URL=postgresql+asyncpg://audit:pass@host:5432/dbname
 
 # Auth
 JWT_SECRET_KEY=              # min 32 bytes, generate with: openssl rand -hex 32
