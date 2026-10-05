@@ -1,17 +1,47 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "maia"
 version = "0.1.0"
-description = "Muster, Assign, Intervene, Audit — open source emergency response platform"
+description = "Mission Aware Incident Authority — open source platform for coordinated emergency response"
+license = "AGPL-3.0-only"
 requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy[asyncio]>=2.0.36,<3",
+    "asyncpg>=0.30",
+    "geoalchemy2>=0.16",
+    "alembic>=1.14",
+    "pydantic>=2.9,<3",
+    "pydantic-settings>=2.6",
+    "pyjwt>=2.10",
+    "argon2-cffi>=23.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "httpx>=0.28",
+    "ruff>=0.8",
+    "black>=24.10",
+    "mypy>=1.13",
+    "pip-audit>=2.7",
+    "pre-commit>=4.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
 
 # ─── Ruff ─────────────────────────────────────────────────────────────────────
 [tool.ruff]
 target-version = "py312"
-line-length = 100
+# Matches black's default so ruff's import sorting and black never disagree.
+line-length = 88
 
 [tool.ruff.lint]
 select = [
@@ -23,14 +53,10 @@ select = [
     "B",   # flake8-bugbear
     "C4",  # flake8-comprehensions
     "SIM", # flake8-simplify
-    "TCH", # flake8-type-checking
+    "TC",  # flake8-type-checking
     "ANN", # flake8-annotations
     "S",   # flake8-bandit (security)
     "N",   # pep8-naming
-]
-ignore = [
-    "ANN101", # missing type annotation for self
-    "ANN102", # missing type annotation for cls
 ]
 
 [tool.ruff.lint.isort]

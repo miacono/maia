@@ -64,7 +64,7 @@ This is a critical system: correctness, security, and traceability are not optio
 | Validation | **Pydantic v2** | every input/output typed |
 | Database | **PostgreSQL 16 + PostGIS 3.4** | native geographic geometries |
 | Migrations | **Alembic** | never manual schema changes |
-| Auth | **JWT** (jose) + **OAuth2** | refresh token with rotation |
+| Auth | **JWT** (PyJWT) + **OAuth2** | refresh token with rotation |
 | Container | **Docker** (multi-stage build) | final image non-root, minimal |
 | Reverse proxy | **Caddy** or **Nginx** | TLS termination, rate limiting, CORS |
 | Real-time | **WebSocket** (FastAPI native) | live map updates |
