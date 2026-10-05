@@ -337,7 +337,7 @@ pre-commit install
 ### Opening a Pull Request
 
 1. Create a branch from `develop`: `git checkout -b feature/feature-name`
-2. Follow the implementation order in `CLAUDE.md`
+2. Follow the implementation order in `AGENTS.md`
 3. Ensure all tests pass and coverage is ≥ 95%
 4. Open the PR against `develop` using the provided template
 5. The CI pipeline must be fully green
