@@ -1,3 +1,6 @@
+# Linters run as local hooks so they use the exact versions pinned in
+# backend/requirements-dev.txt and mypy sees every project dependency.
+# Activate backend/.venv before committing (see README).
 repos:
   - repo: local
     hooks:
@@ -8,3 +11,28 @@ repos:
         types: [python]
         exclude: ^backend/migrations/
         pass_filenames: true
+
+      - id: ruff
+        name: ruff (lint, autofix)
+        entry: ruff check --fix --exit-non-zero-on-fix
+        language: system
+        types: [python]
+        files: ^backend/
+
+      - id: black
+        name: black (format)
+        entry: black
+        language: system
+        types: [python]
+        files: ^backend/
+
+      - id: mypy
+        name: mypy (strict)
+        # Checks the whole backend, not only the staged files, so that
+        # cross-module type errors are caught. Targets come from [tool.mypy].
+        entry: bash -c 'cd backend && mypy'
+        language: system
+        types: [python]
+        files: ^backend/
+        pass_filenames: false
+        require_serial: true

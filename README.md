@@ -334,7 +334,15 @@ pip install --no-deps -e backend/
 # Install pre-commit hooks (pre-commit is part of the dev dependencies)
 pre-commit install
 # Hooks automatically run ruff, black, and mypy on every commit
+
+# Run every hook against the whole repository
+pre-commit run --all-files
 ```
+
+The hooks are local: they run the ruff, black and mypy versions pinned in
+`backend/requirements-dev.txt`, so `backend/.venv` must be active when you commit.
+ruff and black fix what they can automatically; when they modify files the commit
+is stopped so you can review and re-stage the changes.
 
 ### Managing dependencies
 
