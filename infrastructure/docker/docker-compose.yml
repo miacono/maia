@@ -1,0 +1,63 @@
+# Local development stack.
+#
+# Run from the repository root so variables are read from the root .env:
+#   docker compose --env-file .env -f infrastructure/docker/docker-compose.yml up -d
+#
+# Only the variables listed under `environment` reach the container; the rest of
+# .env (JWT secret, etc.) is never exposed to it.
+
+name: maia
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      # Require passwords on every connection; the image default trusts the
+      # Unix socket and loopback inside the container.
+      POSTGRES_INITDB_ARGS: --auth-local=scram-sha-256 --auth-host=scram-sha-256
+      MAIA_DB_MIGRATOR_USER: ${MAIA_DB_MIGRATOR_USER:?set MAIA_DB_MIGRATOR_USER in .env}
+      MAIA_DB_MIGRATOR_PASSWORD: ${MAIA_DB_MIGRATOR_PASSWORD:?set MAIA_DB_MIGRATOR_PASSWORD in .env}
+      MAIA_DB_APP_USER: ${MAIA_DB_APP_USER:?set MAIA_DB_APP_USER in .env}
+      MAIA_DB_APP_PASSWORD: ${MAIA_DB_APP_PASSWORD:?set MAIA_DB_APP_PASSWORD in .env}
+      MAIA_DB_AUDIT_USER: ${MAIA_DB_AUDIT_USER:?set MAIA_DB_AUDIT_USER in .env}
+      MAIA_DB_AUDIT_PASSWORD: ${MAIA_DB_AUDIT_PASSWORD:?set MAIA_DB_AUDIT_PASSWORD in .env}
+    ports:
+      # Bound to loopback only: the database is never reachable from the network.
+      - "127.0.0.1:${MAIA_DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Mounted as a single file so the image's own 10_postgis.sh init script
+      # in the same directory is not hidden.
+      - ./postgres/20-maia-roles.sh:/docker-entrypoint-initdb.d/20-maia-roles.sh:ro
+    healthcheck:
+      # -h forces TCP: during first-run initialization the server only listens
+      # on the Unix socket, so the container is not reported healthy until the
+      # init scripts (roles and grants) have completed.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /var/run/postgresql
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      # Required by the entrypoint to fix data directory ownership and drop
+      # from root to the postgres user.
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+
+volumes:
+  db-data:

@@ -74,11 +74,11 @@ git clone https://github.com/your-org/disaster-response-platform.git
 cd disaster-response-platform
 
 # Copy and configure environment variables
-cp backend/.env.example backend/.env
-# Edit backend/.env with your local values
+cp .env.example .env
+# Edit .env: set every *_PASSWORD and keep the database URLs in sync with them
 
-# Start the full stack
-docker compose -f infrastructure/docker/docker-compose.yml up -d
+# Start the local stack (PostgreSQL 16 + PostGIS 3.4, bound to 127.0.0.1)
+docker compose --env-file .env -f infrastructure/docker/docker-compose.yml up -d --wait
 
 # Apply database migrations
 docker compose exec api alembic upgrade head
@@ -250,6 +250,7 @@ push / PR
 ```bash
 # Database
 DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/disasterdb
+MIGRATION_DATABASE_URL=postgresql+asyncpg://migrator:pass@host:5432/disasterdb
 AUDIT_DATABASE_URL=postgresql+asyncpg://audit_ro:pass@host:5432/disasterdb
 
 # Authentication
