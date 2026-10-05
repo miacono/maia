@@ -150,7 +150,8 @@ disaster-response-platform/
 │   │       └── test_audit_integrity.py
 │   ├── Dockerfile
 │   ├── pyproject.toml               ← centralized config (ruff, mypy, pytest, coverage)
-│   └── requirements.txt             ← pinned dependencies with hashes
+│   ├── requirements.txt             ← pinned runtime dependencies with hashes (uv)
+│   └── requirements-dev.txt         ← pinned runtime + dev dependencies with hashes (uv)
 ├── infrastructure/
 │   ├── docker/
 │   │   ├── docker-compose.yml       ← local development

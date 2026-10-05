@@ -325,14 +325,36 @@ curl -H "Authorization: Bearer <token>" \
 ### Development environment setup
 
 ```bash
-# Install development dependencies
-pip install -e "backend/[dev]"
+# Create a virtual environment and install the pinned development dependencies
+python3 -m venv backend/.venv
+source backend/.venv/bin/activate
+pip install --require-hashes -r backend/requirements-dev.txt
+pip install --no-deps -e backend/
 
-# Install pre-commit hooks
-pip install pre-commit
+# Install pre-commit hooks (pre-commit is part of the dev dependencies)
 pre-commit install
 # Hooks automatically run ruff, black, and mypy on every commit
 ```
+
+### Managing dependencies
+
+Dependencies are declared in `backend/pyproject.toml` and pinned with hashes by
+[uv](https://docs.astral.sh/uv/):
+
+| File | Contents | Used by |
+|---|---|---|
+| `backend/requirements.txt` | Runtime dependencies | Docker image, pip-audit |
+| `backend/requirements-dev.txt` | Runtime + `dev` extra | Local development, CI |
+
+Never edit the lock files by hand. After changing `pyproject.toml`, regenerate both:
+
+```bash
+cd backend
+uv pip compile pyproject.toml --universal --python-version 3.12 --generate-hashes -o requirements.txt
+uv pip compile pyproject.toml --universal --python-version 3.12 --generate-hashes --extra dev -o requirements-dev.txt
+```
+
+To upgrade pinned versions, add `--upgrade` (or `--upgrade-package <name>`) to the commands above.
 
 ### Opening a Pull Request
 
