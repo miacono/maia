@@ -1,10 +1,10 @@
-# CLAUDE.md — Instructions for Building MAIA
+# AGENTS.md — Instructions for Building MAIA
 
 > MAIA — **M**ission **A**ware **I**ncident **A**uthority
 >
 > The open source platform for coordinated emergency response.
 
-This file instructs Claude (and any AI assistant) on the architecture, conventions,
+This file instructs AI coding agents (Claude, Codex, etc.) on the architecture, conventions,
 constraints, and decisions for **MAIA**.
 Every choice described here is final and must not be questioned
 unless explicitly revised in this document.
@@ -20,7 +20,7 @@ This applies to:
 - All code comments and inline documentation
 - All docstrings
 - All commit messages (following Conventional Commits)
-- All documentation files (CLAUDE.md, README.md, docs/)
+- All documentation files (AGENTS.md, README.md, docs/)
 - All configuration file comments
 - All test names and test descriptions
 - All error messages returned by the API
@@ -77,7 +77,7 @@ This is a critical system: correctness, security, and traceability are not optio
 
 ```
 disaster-response-platform/
-├── CLAUDE.md                        ← this file
+├── AGENTS.md                        ← this file
 ├── README.md
 ├── .github/
 │   ├── workflows/
